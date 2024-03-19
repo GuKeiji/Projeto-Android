@@ -1,7 +1,7 @@
 package br.com.greenview.model
 
+import java.util.Objects
+
 data class AirQuality(
-    var id: Int = 0,
-    var aqi: Int = 0,
-    var cityName: String = ""
+    var data: Data = Data()
 )

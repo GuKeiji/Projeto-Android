@@ -5,11 +5,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitFactory {
 
-    private val URL_BASE = "https://api.waqi.info"
+    private val URL_BASE = "https://api.waqi.info/"
 
     private val retrofitFactory = Retrofit
         .Builder()
         .baseUrl(URL_BASE)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    fun listarAirQuality(): AirQualityService{
+        return retrofitFactory.create(AirQualityService::class.java)
+    }
+
 }
