@@ -10,6 +10,7 @@ import android.util.Log
 import br.com.greenview.model.AirQuality
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -115,6 +118,11 @@ fun Tela() {
 
     })
 
+    val fontCardColor = when {
+        airQualityState.value in 52..moderateThreshold -> Color.Black
+        else -> Color.White
+    }
+
     val cardColor = when {
         airQualityState.value <= safeThreshold -> safeColor
         airQualityState.value <= moderateThreshold -> moderateColor
@@ -144,13 +152,12 @@ fun Tela() {
         airQualityState.value > veryUnhealthyThreshold -> "Alerta à saúde, desencadeamento de doenças e saúde gravemente afetada"
         else -> "Seguro"
     }
-
+    Image(painter = painterResource(id = R.drawable.background_aqi), contentDescription = "Paisagem com usinas eólicas", contentScale = ContentScale.Crop)
     Column(
         modifier = Modifier
-            .background(Color(android.graphics.Color.parseColor("#858585")))
-            .fillMaxSize()
-            .padding(15.dp),
-        verticalArrangement = Arrangement.Top,
+            .background(Color(android.graphics.Color.parseColor("#000000")).copy(alpha = 0.8f))
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -174,18 +181,18 @@ fun Tela() {
             ) {
                 Text(
                     text = "São Paulo",
-                    color = Color.White,
+                    color = fontCardColor,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = "${airQualityState.value}",
-                    color = Color.White,
+                    color = fontCardColor,
                     fontWeight = FontWeight.Bold,
                     fontSize = 51.sp
                 )
                 Text(
                     text = "${tituloIndice}",
-                    color = Color.White,
+                    color = fontCardColor,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -199,7 +206,7 @@ fun Tela() {
         )
     }
 }
-
+/*
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TelaPreview() {
@@ -207,3 +214,4 @@ fun TelaPreview() {
         Tela()
     }
 }
+*/
