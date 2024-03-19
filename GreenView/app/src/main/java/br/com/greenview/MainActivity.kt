@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,6 +75,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Tela() {
 
+    //Cores indices
+    val safeColor = Color.Green
+    val moderateColor = Color(android.graphics.Color.parseColor("#ffde33"))
+    val almostUnhealthyColor = Color(android.graphics.Color.parseColor("#b79d1b"))
+    val unhealthyColor = Color.Red
+    val veryUnhealthyColor = Color(android.graphics.Color.parseColor("#660099"))
+    val hazardousColor = Color(android.graphics.Color.parseColor("#7e0023"))
+
+    //Indices determinantes
+    val safeThreshold = 50
+    val moderateThreshold = 100
+    val almostUnhealthyThreshold = 150
+    val unhealthyThreshold = 200
+    val veryUnhealthyThreshold = 300
+
     var airQualityState = remember {
         mutableStateOf(AirQuality().data.aqi)
     }
@@ -99,6 +115,36 @@ fun Tela() {
 
     })
 
+    val cardColor = when {
+        airQualityState.value <= safeThreshold -> safeColor
+        airQualityState.value <= moderateThreshold -> moderateColor
+        airQualityState.value <= almostUnhealthyThreshold -> almostUnhealthyColor
+        airQualityState.value <= unhealthyThreshold -> unhealthyColor
+        airQualityState.value <= veryUnhealthyThreshold -> veryUnhealthyColor
+        airQualityState.value > veryUnhealthyThreshold -> hazardousColor
+        else -> hazardousColor
+    }
+
+    val tituloIndice = when {
+        airQualityState.value <= safeThreshold -> "Bom"
+        airQualityState.value <= moderateThreshold -> "Moderado"
+        airQualityState.value <= almostUnhealthyThreshold -> "Um pouco Prejudicial"
+        airQualityState.value <= unhealthyThreshold -> "Prejudicial"
+        airQualityState.value <= veryUnhealthyThreshold -> "Muito Prejudicial"
+        airQualityState.value > veryUnhealthyThreshold -> "Perigoso"
+        else -> "Bom"
+    }
+
+    val descIndice = when {
+        airQualityState.value <= safeThreshold -> "Qualidade do ar satisfatória, sem riscos"
+        airQualityState.value <= moderateThreshold -> "Qualidade do ar aceitável, pessoas com sensibilidade deve evitar estas áreas"
+        airQualityState.value <= almostUnhealthyThreshold -> "Pessoas com sensibilidade deve evitar estas áreas"
+        airQualityState.value <= unhealthyThreshold -> "Afeta a saúde de todas as pessoas, prejudicial à saúde"
+        airQualityState.value <= veryUnhealthyThreshold -> "Condição de emergência, toda a população é afetada"
+        airQualityState.value > veryUnhealthyThreshold -> "Alerta à saúde, desencadeamento de doenças e saúde gravemente afetada"
+        else -> "Seguro"
+    }
+
     Column(
         modifier = Modifier
             .background(Color(android.graphics.Color.parseColor("#858585")))
@@ -118,7 +164,7 @@ fun Tela() {
                 .height(200.dp)
                 .width(200.dp)
                 .padding(15.dp),
-            colors = CardDefaults.cardColors(Color.Blue)
+            colors = CardDefaults.cardColors(cardColor)
         ){
             Column(
                 modifier = Modifier
@@ -138,26 +184,26 @@ fun Tela() {
                     fontSize = 51.sp
                 )
                 Text(
-                    text = "Seguro",
+                    text = "${tituloIndice}",
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
         Text(
-            text = "Pode sair de casa",
+            text = "${descIndice}",
             color = Color.White,
             fontSize = 25.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
         )
     }
 }
-/*
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TelaPreview() {
     GreenViewTheme {
-        Tela(currentLocation = LatLng())
+        Tela()
     }
 }
-*/
