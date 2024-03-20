@@ -36,7 +36,7 @@ import retrofit2.Response
 @Composable
 fun TelaAirQuality() {
     //Cores indices
-    val safeColor = Color.Green
+    val safeColor = Color(android.graphics.Color.parseColor("#449e48"))
     val moderateColor = Color(android.graphics.Color.parseColor("#ffde33"))
     val almostUnhealthyColor = Color(android.graphics.Color.parseColor("#b79d1b"))
     val unhealthyColor = Color.Red
